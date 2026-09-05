@@ -2,7 +2,7 @@ import type { IRulePlugin, PluginMetadata } from '@veridion/scanner-types';
 import { FindingSeverity } from '@veridion/shared';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { PluginRegistry } from './plugin-registry';
+import { PluginRegistry, createDefaultRegistry } from './plugin-registry';
 
 function createMockPlugin(
   id: string,
@@ -83,5 +83,17 @@ describe('PluginRegistry', () => {
     registry.registerAll([createMockPlugin('a'), createMockPlugin('b')]);
     const allMeta = registry.getAllMetadata();
     expect(allMeta).toHaveLength(2);
+  });
+});
+
+
+describe('createDefaultRegistry', () => {
+  it('should include the unchecked-return plugin', () => {
+    const defaultRegistry = createDefaultRegistry();
+    expect(defaultRegistry.size).toBeGreaterThan(0);
+    const plugin = defaultRegistry.get('unchecked-return');
+    expect(plugin).toBeDefined();
+    expect(plugin?.metadata.id).toBe('unchecked-return');
+    expect(plugin?.metadata.category).toBe('UNCHECKED_RETURN');
   });
 });
