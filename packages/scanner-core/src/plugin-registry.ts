@@ -70,3 +70,13 @@ export class PluginRegistry {
     return this.plugins.size;
   }
 }
+
+
+import { UncheckedReturnPlugin } from '@veridion/plugin-unchecked-return';
+
+export function createDefaultRegistry(): PluginRegistry {
+  const registry = new PluginRegistry();
+  registry.register(new UncheckedReturnPlugin());
+  return registry;
+}
+
